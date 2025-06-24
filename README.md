@@ -30,9 +30,9 @@ The project is organized into the following folders:
 - **ML**: Includes the machine learning module responsible for crop recommendation, implemented using Python.
 
 
-![Screenshot](./asset/Screenshot (1).png)
-![Screenshot](./asset/Screenshot (2).png)
-![Screenshot](./asset/Screenshot (3).png)
-![Screenshot](./asset/Screenshot (4).png)
-![Screenshot](./asset/Screenshot (5).png)
-![Screenshot](./asset/Screenshot (6).png)
+![Screenshot]("./assets/Screenshot (1).png")
+![Screenshot]("./assets/Screenshot (2).png")
+![Screenshot]("./assets/Screenshot (3).png")
+![Screenshot]("./assets/Screenshot (4).png")
+![Screenshot]("./assets/Screenshot (5).png")
+![Screenshot]("./assets/Screenshot (6).png")

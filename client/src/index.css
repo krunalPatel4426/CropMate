@@ -1,0 +1,267 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+  background-color: #c9d4f8;
+}
+
+label {
+  font-size: 1.2rem;
+  color: #656262;
+}
+
+html,
+body {
+  background-color: #5FAD8C;
+  height: 100%;
+  width: 100%;
+}
+
+
+body {
+  background-color: #5FAD8C;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
+
+.form_container {
+  background-color: #fff;
+  padding: 25rem 3rem; 
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  max-height: 400px;
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+}
+
+
+.form_container > h2 {
+  margin-block: 1rem;
+  padding-block: 0.6rem;
+  color: #84a98c; 
+}
+
+.form_container > form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  
+}
+
+.form_container div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  
+}
+
+.form_container input {
+  border: none;
+  padding: 0.5rem;
+  border-bottom: 1px solid #354f52; 
+  font-size: 1.1rem;
+  outline: none;
+  
+}
+
+.form_container input::placeholder {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.form_container button {
+  background-color: #2f3e46;
+  color: #fff;
+  border: none;
+  padding: 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+
+span a {
+  text-decoration: none;
+  color: rgba(0, 212, 255, 1);
+}
+
+.new_card{
+  padding: 5rem;
+}
+
+.card_container {
+  padding: 2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+.home_page {
+  background-color: #c9d4f8 
+}
+
+
+.home_page button {
+  background-color: #354f52; 
+  color: #fff;
+  cursor: pointer;
+  padding: 1rem 3rem;
+  font-size: 2rem;
+  border-radius: 2rem;
+  transition: ease-in 0.3s;
+  border: none;
+  
+}
+
+.home_page button:hover {
+  background-color: rgba(0, 212, 255, 1);
+}
+
+@media only screen and (max-width: 1200px) {
+  .home_page {
+    font-size: 1.5rem;
+  }
+  .home_page button {
+    padding: 0.6rem 1rem;
+    font-size: 1.5rem;
+  }
+}
+.container {
+  max-width: 100%; 
+  margin: 0 auto; 
+  padding: 20px;
+  background-color:#f3ac87;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+.heading_container {
+  background-color: #7a5243;
+  text-align: center;
+  margin-bottom: 20px; 
+}
+
+.heading_container h2 {
+  font-size: 24px; 
+  margin-bottom: 10px;
+  color:#fff;
+}
+
+.grow_container{
+  padding: 40px;
+  margin: auto;
+  width: 1000px;
+  background-color: #c9def8; 
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  margin-top:40px; 
+}
+
+.soil{
+  background-color: #c9d4f8;
+}
+
+.soil_container {
+  padding: 20px;
+  margin: auto;
+  /* max-width: 1000px; */
+  background-color: #c9d4f8; 
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+  /* margin-top: 100px;  */
+
+}
+
+.soil_container h3 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form Elements */
+/* .form-floating {
+  margin-bottom: 20px;
+}
+
+.form-floating input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.form-floating input:focus {
+  outline: none;
+  border-color: #25aae1; 
+}
+
+.form-floating label {
+  pointer-events: none; 
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #333;
+  transition: 0.3s ease-in-out;
+}
+
+.form-floating input:focus + label,
+.form-floating input:not(:placeholder-shown) + label {
+  font-size: 12px;
+  top: 0;
+  transform: translateY(0);
+  color: #25aae1;
+} */
+
+
+.col-md-4 button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: all .4s ease-in-out;
+}
+
+.col-md-4 button:hover {
+  background-position: 100% 0;
+}
+
+
+  
+  
+  
+
+/* Navbar.css */
+.navbar-brand {
+  font-size: 1.5rem;
+  color: #e74d46; 
+
+}
+
+.navbar-nav .nav-link {
+  color: #0f5256;
+  margin-right: 15px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #69ba6b;
+}
+
+.btn-outline-transparent {
+  color: #e74d46;
+}
+
+.btn-outline-transparent:hover {
+  color: #0f5256;
+}
+
+
+

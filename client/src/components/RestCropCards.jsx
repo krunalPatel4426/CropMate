@@ -1,46 +1,32 @@
-import React from 'react'
+import React from "react";
+import { motion } from "framer-motion";
 
-const RestCropCards = ({crops}) => {
+const RestCropCards = ({ crops }) => {
+  const list = crops.slice(1, 5); // show 4 cards (2..5)
   return (
-    <div className="row row-cols-1 row-cols-md-2 g-4">
-  <div className="col">
-    <div className="card">
-      <img src={crops[1].image} className="card-img-top" alt="crop img" style={{height:400, objectFit: "cover"}}/>
-      <div className="card-body">
-        <h2 className="card-title">{crops[1].name}</h2>
-        <p className="card-text">{crops[1].description}.</p>
-      </div>
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      {list.map((c) => (
+        <motion.div
+          key={c.name}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-slate-900"
+        >
+          <div className="aspect-[4/3] w-full overflow-hidden">
+            <img
+              src={c.image}
+              alt={c.name}
+              className="h-full w-full object-cover transition-transform duration-300 will-change-transform group-hover:scale-[1.02]"
+            />
+          </div>
+          <div className="p-4">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">{c.name}</h2>
+            <p className="mt-1 text-sm leading-relaxed text-slate-700 dark:text-slate-300">{c.description}</p>
+          </div>
+        </motion.div>
+      ))}
     </div>
-  </div>
-  <div className="col">
-    <div className="card">
-      <img src={crops[2].image} className="card-img-top" alt="crop img" style={{height:400, objectFit: "cover"}}/>
-      <div className="card-body">
-        <h2 className="card-title">{crops[2].name}</h2>
-        <p className="card-text">{crops[2].description}.</p>
-      </div>
-    </div>
-  </div>
-  <div className="col">
-    <div className="card">
-      <img src={crops[3].image} className="card-img-top" alt="crop img" style={{height:400, objectFit: "cover"}}/>
-      <div className="card-body">
-        <h2 className="card-title">{crops[3].name}</h2>
-        <p className="card-text">{crops[3].description}.</p>
-      </div>
-    </div>
-  </div>
-  <div className="col">
-    <div className="card">
-      <img src={crops[4].image} className="card-img-top" alt="crop img" style={{height:400, objectFit: "cover"}}/>
-      <div className="card-body">
-        <h2 className="card-title">{crops[4].name}</h2>
-        <p className="card-text">{crops[4].description}.</p>
-      </div>
-    </div>
-  </div>
-</div>
-  )
-}
+  );
+};
 
-export default RestCropCards
+export default RestCropCards;

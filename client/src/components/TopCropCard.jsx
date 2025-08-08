@@ -1,19 +1,34 @@
-import React from 'react'
+import React from "react";
+import { motion } from "framer-motion";
 
 const TopCropCard = ({ crop }) => {
-    return (
-        // <div className="card mb-3">
-        <div className="card text-black mb-3" >
-  <img src={crop.image} className="card-img" alt="..." style={{height:400, objectFit: "cover"}}/>
-  {/* <div className="card-img-overlay"></div> */}
-    <h5 className="card-title " style={{fontSize:60,marginLeft:15}}>{crop.name}</h5>
-      
-    <p className="card-text" style={{fontSize:35,marginLeft:15}}>{crop.description}</p>
-    <p className="card-text"style={{fontSize:15,marginLeft:15}}>Based on the crop details you provided, {crop.name} is the best crop to grow in your farm</p>
-</div>
-      // </div>
-    );
-  }
-  
+  if (!crop) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="overflow-hidden rounded-3xl border border-slate-200/60 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900"
+    >
+      <div className="relative">
+        <img
+          src={crop.image}
+          alt={crop.name}
+          className="h-[320px] w-full object-cover sm:h-[400px]"
+        />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 sm:p-6">
+          <h5 className="text-2xl font-bold text-white drop-shadow">{crop.name}</h5>
+        </div>
+      </div>
+      <div className="p-4 sm:p-6">
+        <p className="text-base leading-relaxed text-slate-700 dark:text-slate-300">
+          {crop.description}
+        </p>
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+          Based on the crop details you provided, <span className="font-semibold">{crop.name}</span> is the best crop to grow in your farm.
+        </p>
+      </div>
+    </motion.div>
+  );
+};
 
-export default TopCropCard
+export default TopCropCard;

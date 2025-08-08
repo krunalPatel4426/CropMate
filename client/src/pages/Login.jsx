@@ -1,114 +1,182 @@
+// File: src/pages/Login.jsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
-import Cookies from 'js-cookie';
-import url from '../url'
-
-
+import toast, { Toaster } from "react-hot-toast";
+import Cookies from "js-cookie";
+import url from "../url";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [inputValue, setInputValue] = useState({
-    email: "",
-    password: "",
-  });
+  const [inputValue, setInputValue] = useState({ email: "", password: "" });
   const { email, password } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setInputValue({
-      ...inputValue,
-      [name]: value,
-    });
+    setInputValue((p) => ({ ...p, [name]: value }));
   };
 
-  const handleError = (err) =>
-    toast.error(err, {
-      position: 'top-right',
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined
-    });
-  const handleSuccess = (msg) =>
-    toast.success('User Logged in Successfully')
+  const handleError = (err) => toast.error(err, { position: "top-right", autoClose: 3000 });
+  const handleSuccess = () => toast.success("User Logged in Successfully");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        `${url}/login`,
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
-      );
-      // console.log(data);
-
-      const { success, message,token } = data;
-      if(token){
-        
-      Cookies.set('token', token);
-      }
+      const { data } = await axios.post(`${url}/login`, { ...inputValue }, { withCredentials: true });
+      const { success, message, token } = data;
+      if (token) Cookies.set("token", token);
       if (success) {
         handleSuccess(message);
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+        setTimeout(() => navigate("/"), 1000);
       } else {
         handleError(message);
       }
     } catch (error) {
-      // console.log(error);
+      handleError("Login failed. Please try again.");
     }
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-    });
+    setInputValue({ email: "", password: "" });
   };
 
   return (
-    <div className="login_container" style={{ backgroundImage: `url("LOGIN.png")`, backgroundSize: "cover" }}>
-    <div className="form_container">
-      <h1 style={{marginTop:-200, fontFamily: "cursive", 
-fontStyle: "italic bold ", fontSize:"60px"}} >Crop Mate</h1>
-      <h2 style={{marginTop:40}}>Login Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-floating">
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={handleOnChange}
-          />
-          <label htmlFor="email">Email</label>
-          
-        </div>
-        <div className="form-floating">
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange}
-          />          
-          <label htmlFor="password">Password</label>
-        </div>
-        <button type="submit">Submit</button>
-        <span>
-          Already have an account? <Link to={"/signup"}>Signup</Link>
-        </span>
-      </form>
-      <Toaster />
-    </div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="relative min-h-screen bg-[url('/LOGIN.png')] bg-cover"
+    >
+      <div className="absolute inset-0 bg-white/40 backdrop-blur-sm dark:bg-slate-900/50" />
+      <div className="relative mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ y: 12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.35 }}
+          className="w-full p-4 max-w-md rounded-2xl border border-white/20 bg-white/70 p-6 sm:p-7 lg:p-8 shadow-xl backdrop-blur-md dark:border-white/10 dark:bg-slate-900/70"
+        >
+          <div className="mb-6 text-center">
+            <h1 className="text-4xl font-extrabold italic text-emerald-600 drop-shadow-sm">Crop Mate</h1>
+            <h2 className="mt-3 text-lg font-semibold text-slate-800 dark:text-white">Login Account</h2>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+            {/* Email */}
+            <div className="group">
+              <label
+                htmlFor="email"
+                className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
+                Email
+              </label>
+
+              {/* Wrapper for hover/active polish (Tailwind only) */}
+              <div className="cursor-text">
+                <div
+                  className={[
+                    "relative rounded-xl border bg-white px-3 py-2 transition-all",
+                    "border-slate-200 shadow-sm",
+                    "hover:-translate-y-px hover:shadow-lg hover:shadow-emerald-200/30 hover:border-emerald-300",
+                    "focus-within:-translate-y-px focus-within:shadow-lg focus-within:shadow-emerald-300/40 focus-within:border-emerald-400",
+                    "dark:bg-slate-900 dark:border-white/10",
+                  ].join(" ")}
+                >
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={email}
+                    placeholder="Enter your email"
+                    onChange={handleOnChange}
+                    className="w-full rounded-md bg-transparent text-slate-800 outline-none placeholder:text-slate-400 focus:outline-none focus:ring-0 dark:text-white"
+                  />
+
+                  {/* Tailwind-only animated focus bar (appears on focus) */}
+                  <span
+                    className={[
+                      "pointer-events-none absolute inset-x-2 bottom-1 h-0.5 rounded-full",
+                      email ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 animate-[pulse_1.2s_ease-in-out_infinite]" : "bg-transparent",
+                      "group-focus-within:bg-gradient-to-r group-focus-within:from-emerald-500 group-focus-within:via-teal-400 group-focus-within:to-emerald-500 group-focus-within:animate-[pulse_1.2s_ease-in-out_infinite]",
+                    ].join(" ")}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="group">
+              <label
+                htmlFor="password"
+                className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
+                Password
+              </label>
+
+              <div className="cursor-text">
+                <div
+                  className={[
+                    "relative rounded-xl border bg-white px-3 py-2 transition-all",
+                    "border-slate-200 shadow-sm",
+                    "hover:-translate-y-px hover:shadow-lg hover:shadow-emerald-200/30 hover:border-emerald-300",
+                    "focus-within:-translate-y-px focus-within:shadow-lg focus-within:shadow-emerald-300/40 focus-within:border-emerald-400",
+                    "dark:bg-slate-900 dark:border-white/10",
+                  ].join(" ")}
+                >
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={password}
+                    placeholder="Enter your password"
+                    onChange={handleOnChange}
+                    className="w-full rounded-md bg-transparent text-slate-800 outline-none placeholder:text-slate-400 focus:outline-none focus:ring-0 dark:text-white"
+                  />
+
+                  {/* Tailwind-only animated focus bar */}
+                  <span
+                    className={[
+                      "pointer-events-none absolute inset-x-2 bottom-1 h-0.5 rounded-full",
+                      password ? "bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 animate-[pulse_1.2s_ease-in-out_infinite]" : "bg-transparent",
+                      "group-focus-within:bg-gradient-to-r group-focus-within:from-emerald-500 group-focus-within:via-teal-400 group-focus-within:to-emerald-500 group-focus-within:animate-[pulse_1.2s_ease-in-out_infinite]",
+                    ].join(" ")}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit (compact width, animated hover, no custom CSS) */}
+            <div className="flex">
+              <button
+                type="submit"
+                className={[
+                  "relative, mt-3 inline-flex items-center justify-center overflow-hidden rounded-xl",
+                  "px-4 py-2.5 text-sm font-semibold text-white",
+                  "bg-gradient-to-tr from-emerald-600 to-teal-500",
+                  "shadow-lg shadow-emerald-500/20 transition-all",
+                  "hover:scale-[1.02] hover:shadow-emerald-500/40 active:scale-[0.98]",
+                  "focus:outline-none focus:ring-2 focus:ring-emerald-500/40",
+                  "mx-auto sm:mx-0",
+                ].join(" ")}
+              >
+                {/* sheen sweep using only tailwind utilities */}
+                <span
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 transition-all duration-700 ease-out hover:translate-x-full hover:opacity-100"
+                  aria-hidden
+                />
+                Submit
+              </button>
+            </div>
+
+            {/* Bottom text */}
+            <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-300">
+              Don&apos;t have an account?
+              <Link to="/signup" className="ml-1 font-medium text-emerald-600 hover:underline">
+                Signup
+              </Link>
+            </p>
+          </form>
+
+          <Toaster />
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 

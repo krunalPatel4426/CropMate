@@ -1,130 +1,123 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
-import CommentBox from '../components/CommentBox'
-import PostTitles from '../components/PostTitles';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
-import url from '../url'
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import CommentBox from "../components/CommentBox";
+import PostTitles from "../components/PostTitles";
+import url from "../url";
+import { motion } from "framer-motion";
+
+const Spinner = () => (
+  <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+    <svg className="h-5 w-5 animate-spin text-emerald-600" viewBox="0 0 24 24">
+      <circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+      <path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+    </svg>
+    <span>Loading...</span>
+  </div>
+);
 
 const PostDetails = () => {
   const { postId } = useParams();
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
+  const [loadingPost, setLoadingPost] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(true);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        // Make a POST request to fetch the post details
-        const response = await axios.get(`${url}/PostId?postId=${postId}`);;
-        const data = await response.data;
-
-        // Check if the response contains post data
-        if (response.status) {
-          setPost(data); // Update the state with the received post data
-        } else {
-          console.error("Error fetching post:", data.message);
-        }
+        setLoadingPost(true);
+        const response = await axios.get(`${url}/PostId?postId=${postId}`);
+        const data = response.data;
+        if (response.status) setPost(data);
       } catch (error) {
         console.error("Error fetching post:", error);
+      } finally {
+        setLoadingPost(false);
       }
     };
-
-    fetchPost(); // Call the fetchPost function when the component mounts
-  }, [postId]); // Execute the effect whenever postId changes
+    fetchPost();
+  }, [postId]);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        // Make a GET request to fetch comments based on postId
+        setLoadingComments(true);
         const response = await axios.get(`${url}/Commentfetch?postId=${postId}`);
-        const data = await response.data;
-
-        if (response.status) {
-          setComments(data.comments); // Update the state with the received comments data
-          
-        } else {
-          console.error("Error fetching comments:", data.message);
-        }
+        const data = response.data;
+        if (response.status) setComments(data.comments);
       } catch (error) {
         console.error("Error fetching comments:", error);
+      } finally {
+        setLoadingComments(false);
       }
     };
-
-    fetchComments(); // Call the fetchComments function when the component mounts
-  }, [postId]); 
-  
-  const formatDate = (dateString) => {
-    let distance = formatDistanceToNow(new Date(dateString), {
-      addSuffix: true,
-    });
-    distance = distance.replace("about ", "");
-    return distance;
-  };
-  
-
-
-  if (!post) {
-    // Render loading indicator or return null if post data is not available yet
-    return <div>Loading...</div>;
-  }
+    fetchComments();
+  }, [postId]);
 
   const handleCommentSubmission = async (commentData) => {
     try {
-      // Make a POST request to submit the comment data
       const response = await axios.post(`${url}/Comment`, commentData, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = response.data;
-  
-      // Handle the response as needed
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = response.data;
       console.log("Comment submitted:", data);
-      toast.success('Replied!', {
-        position: 'top-right',
+      toast.success("Replied!", {
+        position: "top-right",
         autoClose: 1200,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        onClose: setTimeout(function(){ window.location.reload(1);}, 1500)
+        onClose: setTimeout(function () {
+          window.location.reload(1);
+        }, 1500),
       });
     } catch (error) {
       console.error("Error submitting comment:", error);
     }
   };
 
+  const container = useMemo(
+    () => ({ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } }),
+    []
+  );
+  const item = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0 } };
+
+  if (loadingPost) {
+    return (
+      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-b from-emerald-50 via-sky-50 to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+        <div className="mx-auto max-w-4xl px-4 py-10">
+          <Spinner />
+        </div>
+      </div>
+    );
+  }
+
+  if (!post) {
+    return (
+      <div className="min-h-[calc(100vh-64px)] bg-gradient-to-b from-emerald-50 via-sky-50 to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+        <div className="mx-auto max-w-4xl px-4 py-10 text-slate-600 dark:text-slate-300">Post not found.</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="row row-cols-1 row-cols-md-1 g-4 px-5 pb-3 p-1" style={{backgroundColor:"#c9d4f8"}}>
-      <div className="col">
-        {/* <div className="card card-body">
-          <div className="d-flex align-items-center mb-3">
-            <img
-              src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg"
-              className="card-img rounded-circle"
-              alt="..."
-              style={{ width: "40px", height: "40px" }}
-            />
-            <div className="d-flex justify-content-between">
-              <h6 className="card-title s"> &nbsp; {post.creatorname}&nbsp;</h6>
-              <small className="text-muted">
-                &bull;&nbsp;{formatDate(post.createdAt)}
-              </small>
-            </div>
-          </div>
-          <h5 className="card-title">{post.heading}</h5>
-          <p className="card-text">{post.content}</p>
-        </div> */}
-        <PostTitles type="post" posts={[post]} />
-      <CommentBox postId={postId} type="comment" onCommentSubmit={handleCommentSubmission}/>
-      <div className="mt-3">
-      <PostTitles type="comment" posts={comments}/>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-[calc(100vh-64px)] bg-gradient-to-b from-emerald-50 via-sky-50 to-white dark:from-slate-900 dark:via-slate-900 dark:to-slate-950">
+      <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+        <motion.div variants={container} initial="hidden" animate="show" className="space-y-6">
+          <motion.div variants={item} className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-slate-900">
+            <PostTitles type="post" posts={[post]} />
+          </motion.div>
+
+          <motion.div variants={item} className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-slate-900">
+            <CommentBox postId={postId} type="comment" onCommentSubmit={handleCommentSubmission} />
+          </motion.div>
+
+          <motion.div variants={item} className="rounded-2xl border border-slate-200/60 bg-white p-4 shadow-sm transition hover:shadow-md dark:border-white/10 dark:bg-slate-900">
+            {loadingComments ? <Spinner /> : <PostTitles type="comment" posts={comments} />}
+          </motion.div>
+        </motion.div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -75,7 +75,7 @@ module.exports.dataToML = async (req, res, next) => {
 
     try {
         // Make a request to the Flask ML API
-        const mlApiResponse = await axios.post('http://localhost:5000/predict', {
+        const mlApiResponse = await axios.post('http://localhost:8000/predict/', {
             id,
             Nitrogen,
             Phosphorus,

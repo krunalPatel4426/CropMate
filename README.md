@@ -36,13 +36,13 @@ The project leverages a diverse set of modern technologies:
 ## 📂 Project Structure
 
 The repository is organized into three main directories:
-
+```
 /
 ├── client/         # React.js frontend application
 ├── server/         # MERN stack backend (Node.js, Express)
 ├── crop_project/   # Django backend for serving the ML model
 └── ml/             # Contains the ML model (e.g., model.pkl) and related notebooks
-
+```
 
 ## 📸 Screenshots
 
